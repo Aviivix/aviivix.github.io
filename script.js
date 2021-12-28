@@ -116,7 +116,7 @@ function getZooData(zoo_name){
 				case 'Fish':
 					FishList.push(notation);
 					break;
-				case 'Invertebrates':
+				case 'Invertibrates':
 					InveList.push(notation);
 					break;
 			}
