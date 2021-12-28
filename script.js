@@ -1,4 +1,4 @@
-// v0.1.7
+// v0.2.0
 
 var coll = document.getElementsByClassName("collapsible");
 var i;
@@ -41,7 +41,90 @@ Http.onreadystatechange=(e)=>{
 	document.getElementById("closed_zoo_list").innerHTML = "<p>" + ClosedZooNames.join("<\p><p>") + "</p>";
 }
 
+function blankData(){
+	document.getElementById("main_data").innerHTML = ""
+	document.getElementById("zoo_button").innerHTML = "<b>Search Zoos</b>"
+	document.getElementById("species_button").innerHTML = "Search Species"
+}
+
+function showSpeciesList(){
+	document.getElementById("zoo_button").innerHTML = "Search Zoos"
+	document.getElementById("species_button").innerHTML = "<b>Search Species</b>"
+	document.getElementById("main_data").innerHTML = "\t<h3>Species Data</h3>\n\t\t<h1>Mammals</h1>\n\t\t<div id=\"mam_info\"></div>\n\t\t<h1>Birds</h1>\n\t\t<div id=\"bird_info\"></div>\n\t\t<h1>Herptiles</h1>\n\t\t<div id=\"herp_info\"></div>\n\t\t<h1>Fish</h1>\n\t\t<div id=\"fish_info\"></div>\n\t\t<h1>Invertebrates</h1>\n\t\t<div id=\"invert_info\"></div>"
+	
+	var ZooData = Http.responseText;
+	var ZooJson = JSON.parse(ZooData);
+	var IndList = Object.keys(ZooJson.Individuals);
+	var Holdings = {}
+	var HoldingHTML = ""
+	
+	for(let i = 0; i < IndList.length; i++){
+		var species = ZooJson['Individuals'][IndList[i]]['scientific name']
+		var sex = ZooJson['Individuals'][IndList[i]]['sex']
+		var age = ZooJson['Individuals'][IndList[i]]['age']
+		var owner = ZooJson['Individuals'][IndList[i]]['owner'];
+		
+		if (Object.keys(ZooJson['Individuals'][IndList[i]]).indexOf('subspecies_breed') == -1) {
+			var subspecies = 'No Subspecific Status';
+		} else if(ZooJson['Individuals'][IndList[i]]['subspecies_breed'] == '') {
+			var subspecies = 'No Subspecific Status';
+		} else {
+			var subspecies = ZooJson['Individuals'][IndList[i]]['subspecies_breed'];
+		}
+		
+		if(Object.keys(Holdings).indexOf(species) == -1){
+			Holdings[species] = {}
+			Holdings[species][subspecies] = {}
+			Holdings[species][subspecies][owner] = { 'Adult': { "M": 0, "F": 0 }, 'Juv': { "M": 0, "F": 0 } }
+		} else if(Object.keys(Holdings[species]).indexOf(subspecies) == -1) {
+			Holdings[species][subspecies] = {}
+			Holdings[species][subspecies][owner] = { 'Adult': { "M": 0, "F": 0 }, 'Juv': { "M": 0, "F": 0 } }
+		} else if (Object.keys(Holdings[species][subspecies]).indexOf(owner) == -1) {
+			Holdings[species][subspecies][owner] = { 'Adult': { "M": 0, "F": 0 }, 'Juv': { "M": 0, "F": 0 } }
+		}
+		Holdings[species][subspecies][owner][age][sex]++
+	}
+	
+	for(let i = 0; i < Object.keys(Holdings).length; i++){
+		species = Object.keys(Holdings)[i]
+		speciesData = ZooJson['Species'][species]
+		var HoldingHTML = HoldingHTML + "<h5>" + speciesData['common names'][0] + "</h5>"
+		if (speciesData['common names'].length > 1){
+			var HoldingHTML = HoldingHTML + "<h6>Alternate Names: " + speciesData['common names'].slice(1) + "</h6>"
+		}
+		
+		for(let s = 0; s < Object.keys(Holdings[species]).length; s++){
+			var subspecies = Object.keys(Holdings[species])[s]
+			if (subspecies == 'No Subspecific Status'){
+				var name = species
+			} else {
+				var name = species + ' ' + subspecies
+			}
+			var HoldingHTML = HoldingHTML + "<h4><i>" + name + "</i></h4>\n\t<div class=\"row\">"
+			
+			var cols = [[],[],[],[],[]];
+			for(let o = 0; o < Object.keys(Holdings[species][subspecies]).length; o++){
+				var owner = Object.keys(Holdings[species][subspecies])[o]
+				
+				if (Holdings[species][subspecies][owner]['Juv']['M'] + Holdings[species][subspecies][owner]['Juv']['F'] == 0) {
+					var notation = ZooJson['Zoos'][owner]['zoo_name'] + " (" + Holdings[species][subspecies][owner]['Adult']["M"] + '.' + Holdings[species][subspecies][owner]['Adult']["F"] + ")"
+				} else {
+					var notation = ZooJson['Zoos'][owner]['zoo_name'] + " (" + Holdings[species][subspecies][owner]['Adult']["M"] + '.' + Holdings[species][subspecies][owner]['Adult']["F"] + '.' + Holdings[species][subspecies][owner]['Juv']["M"] + '.' + Holdings[species][subspecies][owner]['Juv']["F"] + ')'
+				}
+				cols[o%5].push(notation)
+				console.log(cols)
+			}
+			var HoldingHTML = HoldingHTML + "<div class=\"column\"><p>" + cols[0].join("</p><p>") + "</p></div><div class=\"column\"><p>" + cols[1].join("</p><p>") + "</p></div><div class=\"column\"><p>" + cols[2].join("</p><p>") + "</p></div><div class=\"column\"><p>" + cols[3].join("</p><p>") + "</p></div><div class=\"column\"><p>" + cols[4].join("</p><p>") + "</p></div></div>"
+		}
+	}
+	document.getElementById("main_data").innerHTML = HoldingHTML
+}
+
 function getZooData(zoo_name){
+	document.getElementById("zoo_button").innerHTML = "<b>Search Zoos</b>"
+	document.getElementById("species_button").innerHTML = "Search Species"
+	document.getElementById("main_data").innerHTML = "\t<h3><div id=\"current_zoo_name\"></div></h3>\n\t\t<div id=\"current_zoo_data\"></div>\n\t\t<h1>Held Species</h1>\n\t\t<div id=\"species_info\"></div>\n\t\t<h2>Birds</h2>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"bird_col_0\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"bird_col_1\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"bird_col_2\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"bird_col_3\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"bird_col_4\"></div>\n\t\t\t</div>\n\t\t</div>\n\t\t\n\t\t<h2>Mammals</h2>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"mam_col_0\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"mam_col_1\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"mam_col_2\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"mam_col_3\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"mam_col_4\"></div>\n\t\t\t</div>\n\t\t</div>\n\t\t\n\t\t<h2>Herptiles</h2>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"herp_col_0\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"herp_col_1\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"herp_col_2\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"herp_col_3\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"herp_col_4\"></div>\n\t\t\t</div>\n\t\t</div>\n\t\t\n\t\t<h2>Fish</h2>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"fish_col_0\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"fish_col_1\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"fish_col_2\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"fish_col_3\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"fish_col_4\"></div>\n\t\t\t</div>\n\t\t</div>\n\t\t\n\t\t<h2>Invertebrates</h2>\n\t\t<div class=\"row\">\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"invert_col_0\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"invert_col_1\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"invert_col_2\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"invert_col_3\"></div>\n\t\t\t</div>\n\t\t\t<div class=\"column\">\n\t\t\t\t<div id=\"invert_col_4\"></div>\n\t\t\t</div>\n\t\t</div>";
+	
 	var ZooData = Http.responseText;
 	var ZooJson = JSON.parse(ZooData);
 	
