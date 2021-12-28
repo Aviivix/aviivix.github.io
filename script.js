@@ -1,3 +1,5 @@
+// v0.1.7
+
 var coll = document.getElementsByClassName("collapsible");
 var i;
 
