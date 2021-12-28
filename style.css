@@ -1,25 +1,141 @@
+@font-face {
+	font-family: whitney;
+	src: url(whitneymedium.otf);
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #2f3136;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #202225;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #202225;
+}
+
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
-  background-color: #eee;
-  color: #444;
-  cursor: pointer;
-  padding: 4px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 12px;
+	background-color: #2f3136;
+	color: #fafafa;
+	cursor: pointer;
+	padding: 5px;
+	width: 100%;
+	border: none;
+	text-align: left;
+	outline: none;
+	font-family: whitney;
+	font-size: 14px;
 }
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 .active, .collapsible:hover {
-  background-color: #ccc;
+	background-color: #34373c;
 }
 
 /* Style the collapsible content. Note: hidden by default */
 .content {
-  padding: 0 4px;
-  display: none;
-  overflow: hidden;
-  background-color: #f1f1f1;
+	margin-left: 15px;
+	display: none;
+	padding-left: 5px;
+	color: #fafafa;
+	background-color: #2f3136;
+	font-family: whitney;
+	font-size: 14px;
+}
+
+button {
+	background-color: #2f3136;
+	color: #72767d;
+	text-align: left;
+	font-size: 14px;
+	padding: 10px 10px 10px 20px;
+	border: 0;
+	width: 300px;
+}
+
+button:hover {
+	background-color: #34373c;
+	color: #72767d;
+	text-align: left;
+	font-size: 14px;
+	border: 0;
+}
+
+body {
+	background-color: #36393f;
+	font-size: 14px;
+	font-family: whitney;
+	color: #fafafa;
+}
+
+td {
+	vertical-align: top;
+}
+
+p {
+	margin: 0px;
+	font-size: 18px;
+	line-height: 24px;
+	vertical-align: top;
+}
+
+table {
+    table-layout: fixed;
+    width: 85%;
+	vertical-align: top;
+}
+
+h1 {
+	font-size: 24px;
+}
+
+h2 {
+	font-size: 18px;
+	margin-left: 20px;
+}
+
+h3 {
+	font-size: 48px;
+	margin-top: 32px;
+	margin-bottom: 14px;
+	margin-left: 20px;
+}
+
+.sidebarcontent {
+	background-color: #2f3136;
+	color: #72767d;
+	text-align: left;
+	font-size: 14px;
+	box-sizing: border-box;
+	padding-left: 0px;
+	position: fixed;
+	bottom: -18px;
+	left: 0;
+	height: 96%;
+	width: 300px;
+	overflow: scroll;
+}
+
+.sidebar {
+	background-color: #2f3136;
+	color: #fafafa;
+	text-align: left;
+	font-size: 14px;
+	box-sizing: border-box;
+	padding: 0px 0px 15px 15px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 6%;
+	width: 300px;
 }
