@@ -1,13 +1,41 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  v 0.0.2
-  <button type="button" class="collapsible">Open Collapsible</button>
-  <div class="content">
-    <p>Lorem ipsum...</p>
-  </div>
+	<head>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	
+	<div class="sidebar">
+		<h1>ZSU Zoos</h1>
+	</div>
+	<div class="sidebarcontent">
+		<h2>Open</h2>
+		<div id="open_zoo_list"></div>
+		<h2>Closed</h2>
+		<div id="closed_zoo_list"></div>
+	</div>
+	
+	<div style="margin-left: 315px; padding-left:15px">
+		<h3><div id="current_zoo_name"></div></h3>
+		<div id="current_zoo_data"></div>
+		<h1>Held Species</h1>
+		<div id="test"></div>
+		<table>
+			<tr>
+				<th><h1>Birds</h1></th>
+				<th><h1>Mammals</h1></th>
+				<th><h1>Herptiles</h1></th>
+				<th><h1>Fish</h1></th>
+				<th><h1>Invertebrates</h1></th>
+			</tr>
+			<tr>
+				<td><div id="bird_holdings"></div></td>
+				<td><div id="mamm_holdings"></div></td>
+				<td><div id="herp_holdings"></div></td>
+				<td><div id="fish_holdings"></div></td>
+				<td><div id="inve_holdings"></div></td>
+			</tr>
+		</table>
+	</div>
 </html>
 
 
