@@ -3,6 +3,39 @@
 	src: url(whitneymedium.otf);
 }
 
+/* Container for flexboxes */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 12;
+  padding: 4px 4px 4px 20px;
+  background: #2f3136;
+}
+
+/* Create four equal columns */
+.column {
+  flex: 15%;
+  padding: 20px;
+  font-size: 12;
+  padding: 4px;
+}
+
+/* On screens that are 992px wide or less, go from four columns to two columns */
+/* Source: w3schools */
+@media screen and (max-width: 992px) {
+  .column {
+    flex: 30%;
+  }
+}
+
+/* On screens that are 600px wide or less, make the columns stack on top of each other instead of next to each other */
+/* Source: w3schools */
+@media screen and (max-width: 600px) {
+  .row {
+    flex-direction: column;
+  }
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 4px;
@@ -97,11 +130,15 @@ table {
 
 h1 {
 	font-size: 24px;
+	margin-bottom: 4px;
 }
 
 h2 {
-	font-size: 18px;
-	margin-left: 20px;
+	font-size: 20px;
+	padding-left: 20px;
+	padding-top: 8px;
+	margin-bottom: 0px;
+	background: #2f3136;
 }
 
 h3 {
