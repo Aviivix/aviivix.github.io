@@ -42,8 +42,6 @@ Http.onreadystatechange=(e)=>{
 function getZooData(zoo_name){
 	var ZooData = Http.responseText;
 	var ZooJson = JSON.parse(ZooData);
-	document.getElementById("current_zoo_name").innerHTML = ZooJson['Zoos'][zoo_name]['zoo_name'];
-	document.getElementById("current_zoo_data").innerHTML = "<p>" + ZooJson['Zoos'][zoo_name]['zoo_name'] + " was founded by " + ZooJson['Zoos'][zoo_name]['owner_name'] + ", and is located in " + ZooJson['Zoos'][zoo_name]['location'] + " (" + ZooJson['Zoos'][zoo_name]['region'] + ").</p><p>It currently has " + ZooJson['Zoos'][zoo_name]['tokens'] + " tokens.";
 	
 	var IndList = Object.keys(ZooJson.Individuals);
 	var OwnedAnimals = [];
@@ -56,7 +54,7 @@ function getZooData(zoo_name){
 	var OwnedSpecies = {};
 	
 	for(let i = 0; i < OwnedAnimals.length; i++){
-		var species = ZooJson['Individuals'][OwnedAnimals[i]]['scientific name'] + ZooJson['Individuals'][OwnedAnimals[i]]['subspecies_breed']
+		var species = ZooJson['Individuals'][OwnedAnimals[i]]['scientific name']
 		var sex = ZooJson['Individuals'][OwnedAnimals[i]]['sex']
 		var age = ZooJson['Individuals'][OwnedAnimals[i]]['age']
 		
@@ -82,38 +80,45 @@ function getZooData(zoo_name){
 	var HerpList = []
 	var FishList = []
 	var InveList = []
-			
+	
+	console.log('SPECIES OK: ')
+	console.log(OwnedSpecies)
+	
 	for (let i = 0; i < Object.keys(OwnedSpecies).length; i++){
 		var species = Object.keys(OwnedSpecies)[i]
+		console.log('NEW SPECIES: ' + species)
 		for (let s = 0; s < Object.keys(OwnedSpecies[species]).length; s++){
-			console.log('Checking New Species')
-			try {
-				var subspecies = Object.keys(OwnedSpecies[species])[s]
+			var subspecies = Object.keys(OwnedSpecies[species])[s]
+			console.log('CHECKING SUBSPECIES: ' + subspecies)
+			if (subspecies != 'No Subspecific Status'){
+				if (OwnedSpecies[species][subspecies]['Juv']['M'] + OwnedSpecies[species][subspecies]['Juv']['F'] == 0) {
+					var notation = OwnedSpecies[species][subspecies]['Adult']["M"] + '.' + OwnedSpecies[species][subspecies]['Adult']["F"] + ' ' + ZooJson['Species'][species]['common names'][0] + ' (' + subspecies + ')'
+				} else {
+					var notation = OwnedSpecies[species][subspecies]['Adult']["M"] + '.' + OwnedSpecies[species][subspecies]['Adult']["F"] + '.' + OwnedSpecies[species][subspecies]['Juv']["M"] + '.' + OwnedSpecies[species][subspecies]['Juv']["F"] + ' ' + ZooJson['Species'][species]['common names'][0] + ' (' + subspecies + ')'
+				}
+			} else {
 				if (OwnedSpecies[species][subspecies]['Juv']['M'] + OwnedSpecies[species][subspecies]['Juv']['F'] == 0) {
 					var notation = OwnedSpecies[species][subspecies]['Adult']["M"] + '.' + OwnedSpecies[species][subspecies]['Adult']["F"] + ' ' + ZooJson['Species'][species]['common names'][0]
 				} else {
 					var notation = OwnedSpecies[species][subspecies]['Adult']["M"] + '.' + OwnedSpecies[species][subspecies]['Adult']["F"] + '.' + OwnedSpecies[species][subspecies]['Juv']["M"] + '.' + OwnedSpecies[species][subspecies]['Juv']["F"] + ' ' + ZooJson['Species'][species]['common names'][0]
 				}
-				console.log(ZooJson['Species'][species])
-				switch (ZooJson['Species'][species]['group']){
-					case 'Birds':
-						BirdList.push(notation);
-						break;
-					case 'Mammals':
-						MammList.push(notation);
-						break;
-					case 'Herptiles':
-						HerpList.push(notation);
-						break;
-					case 'Fish':
-						FishList.push(notation);
-						break;
-					case 'Invertebrates':
-						InveList.push(notation);
-						break;
-				}
-			} catch (TypeError) {
-				console.log('Hit End')
+			}
+			switch (ZooJson['Species'][species]['group']){
+				case 'Birds':
+					BirdList.push(notation);
+					break;
+				case 'Mammals':
+					MammList.push(notation);
+					break;
+				case 'Herptiles':
+					HerpList.push(notation);
+					break;
+				case 'Fish':
+					FishList.push(notation);
+					break;
+				case 'Invertebrates':
+					InveList.push(notation);
+					break;
 			}
 		}
 	}
@@ -123,6 +128,9 @@ function getZooData(zoo_name){
 	document.getElementById("herp_holdings").innerHTML = "<p>" + HerpList.join("</p><p>") + "</p>";
 	document.getElementById("fish_holdings").innerHTML = "<p>" + FishList.join("</p><p>") + "</p>";
 	document.getElementById("inve_holdings").innerHTML = "<p>" + InveList.join("</p><p>") + "</p>";
+	document.getElementById("current_zoo_name").innerHTML = ZooJson['Zoos'][zoo_name]['zoo_name'];
+	document.getElementById("current_zoo_data").innerHTML = "<p>" + ZooJson['Zoos'][zoo_name]['zoo_name'] + " was founded by " + ZooJson['Zoos'][zoo_name]['owner_name'] + ", and is located in " + ZooJson['Zoos'][zoo_name]['location'] + " (" + ZooJson['Zoos'][zoo_name]['region'] + ").</p><p>It currently has " + ZooJson['Zoos'][zoo_name]['tokens'] + " tokens.";
+	document.getElementById("species_info").innerHTML = "<p>" + ZooJson['Zoos'][zoo_name]['zoo_name'] + " currently owns " + OwnedAnimals.length + ' individual animals from ' + Object.keys(OwnedSpecies).length + " species.</p>";
 	
 	
 }
