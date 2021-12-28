@@ -81,10 +81,17 @@ function getZooData(zoo_name){
 	var FishList = []
 	var InveList = []
 	
+	var BirdCol = [[],[],[],[],[]]
+	var MammCol = [[],[],[],[],[]]
+	var HerpCol = [[],[],[],[],[]]
+	var FishCol = [[],[],[],[],[]]
+	var InveCol = [[],[],[],[],[]]	
+	
 	console.log('SPECIES OK: ')
 	console.log(OwnedSpecies)
 	
 	for (let i = 0; i < Object.keys(OwnedSpecies).length; i++){
+		
 		var species = Object.keys(OwnedSpecies)[i]
 		console.log('NEW SPECIES: ' + species)
 		for (let s = 0; s < Object.keys(OwnedSpecies[species]).length; s++){
@@ -103,6 +110,7 @@ function getZooData(zoo_name){
 					var notation = OwnedSpecies[species][subspecies]['Adult']["M"] + '.' + OwnedSpecies[species][subspecies]['Adult']["F"] + '.' + OwnedSpecies[species][subspecies]['Juv']["M"] + '.' + OwnedSpecies[species][subspecies]['Juv']["F"] + ' ' + ZooJson['Species'][species]['common names'][0]
 				}
 			}
+			var col = i % 5
 			switch (ZooJson['Species'][species]['group']){
 				case 'Birds':
 					BirdList.push(notation);
@@ -123,11 +131,56 @@ function getZooData(zoo_name){
 		}
 	}
 	
-	document.getElementById("bird_holdings").innerHTML = "<p>" + BirdList.join("</p><p>") + "</p>";
-	document.getElementById("mamm_holdings").innerHTML = "<p>" + MammList.join("</p><p>") + "</p>";
-	document.getElementById("herp_holdings").innerHTML = "<p>" + HerpList.join("</p><p>") + "</p>";
-	document.getElementById("fish_holdings").innerHTML = "<p>" + FishList.join("</p><p>") + "</p>";
-	document.getElementById("inve_holdings").innerHTML = "<p>" + InveList.join("</p><p>") + "</p>";
+	for (let i = 0; i < BirdList.length; i++){
+		var col = i % 5
+		BirdCol[i%5].push(BirdList[i])
+	}
+	for (let i = 0; i < MammList.length; i++){
+		var col = i % 5
+		MammCol[i%5].push(MammList[i])
+	}
+	for (let i = 0; i < HerpList.length; i++){
+		var col = i % 5
+		HerpCol[i%5].push(HerpList[i])
+	}
+	for (let i = 0; i < FishList.length; i++){
+		var col = i % 5
+		FishCol[i%5].push(FishList[i])
+	}
+	for (let i = 0; i < InveList.length; i++){
+		var col = i % 5
+		InveCol[i%5].push(InveList[i])
+	}
+	
+	document.getElementById("bird_col_0").innerHTML = "<p>" + BirdCol[0].join("</p><p>") + "</p>";
+	document.getElementById("bird_col_1").innerHTML = "<p>" + BirdCol[1].join("</p><p>") + "</p>";
+	document.getElementById("bird_col_2").innerHTML = "<p>" + BirdCol[2].join("</p><p>") + "</p>";
+	document.getElementById("bird_col_3").innerHTML = "<p>" + BirdCol[3].join("</p><p>") + "</p>";
+	document.getElementById("bird_col_4").innerHTML = "<p>" + BirdCol[4].join("</p><p>") + "</p>";
+	
+	document.getElementById("mam_col_0").innerHTML = "<p>" + MammCol[0].join("</p><p>") + "</p>";
+	document.getElementById("mam_col_1").innerHTML = "<p>" + MammCol[1].join("</p><p>") + "</p>";
+	document.getElementById("mam_col_2").innerHTML = "<p>" + MammCol[2].join("</p><p>") + "</p>";
+	document.getElementById("mam_col_3").innerHTML = "<p>" + MammCol[3].join("</p><p>") + "</p>";
+	document.getElementById("mam_col_4").innerHTML = "<p>" + MammCol[4].join("</p><p>") + "</p>";
+	
+	document.getElementById("herp_col_0").innerHTML = "<p>" + HerpCol[0].join("</p><p>") + "</p>";
+	document.getElementById("herp_col_1").innerHTML = "<p>" + HerpCol[1].join("</p><p>") + "</p>";
+	document.getElementById("herp_col_2").innerHTML = "<p>" + HerpCol[2].join("</p><p>") + "</p>";
+	document.getElementById("herp_col_3").innerHTML = "<p>" + HerpCol[3].join("</p><p>") + "</p>";
+	document.getElementById("herp_col_4").innerHTML = "<p>" + HerpCol[4].join("</p><p>") + "</p>";
+	
+	document.getElementById("fish_col_0").innerHTML = "<p>" + FishCol[0].join("</p><p>") + "</p>";
+	document.getElementById("fish_col_1").innerHTML = "<p>" + FishCol[1].join("</p><p>") + "</p>";
+	document.getElementById("fish_col_2").innerHTML = "<p>" + FishCol[2].join("</p><p>") + "</p>";
+	document.getElementById("fish_col_3").innerHTML = "<p>" + FishCol[3].join("</p><p>") + "</p>";
+	document.getElementById("fish_col_4").innerHTML = "<p>" + FishCol[4].join("</p><p>") + "</p>";
+	
+	document.getElementById("invert_col_0").innerHTML = "<p>" + InveCol[0].join("</p><p>") + "</p>";
+	document.getElementById("invert_col_1").innerHTML = "<p>" + InveCol[1].join("</p><p>") + "</p>";
+	document.getElementById("invert_col_2").innerHTML = "<p>" + InveCol[2].join("</p><p>") + "</p>";
+	document.getElementById("invert_col_3").innerHTML = "<p>" + InveCol[3].join("</p><p>") + "</p>";
+	document.getElementById("invert_col_4").innerHTML = "<p>" + InveCol[4].join("</p><p>") + "</p>";
 	document.getElementById("current_zoo_name").innerHTML = ZooJson['Zoos'][zoo_name]['zoo_name'];
 	document.getElementById("current_zoo_data").innerHTML = "<p>" + ZooJson['Zoos'][zoo_name]['zoo_name'] + " was founded by " + ZooJson['Zoos'][zoo_name]['owner_name'] + ", and is located in " + ZooJson['Zoos'][zoo_name]['location'] + " (" + ZooJson['Zoos'][zoo_name]['region'] + ").</p><p>It currently has " + ZooJson['Zoos'][zoo_name]['tokens'] + " tokens.";
 	document.getElementById("species_info").innerHTML = "<p>" + ZooJson['Zoos'][zoo_name]['zoo_name'] + " currently owns " + OwnedAnimals.length + ' individual animals from ' + Object.keys(OwnedSpecies).length + " species.</p>";
