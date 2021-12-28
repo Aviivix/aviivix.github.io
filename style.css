@@ -1,4 +1,4 @@
-/* v0.1.8 */
+/* v0.1.7 */
 
 @font-face {
 	font-family: whitney;
@@ -98,6 +98,17 @@ button {
 	width: 300px;
 }
 
+button2 {
+	background-color: #2f3136;
+	color: #72767d;
+	text-align: left;
+	font-size: 14px;
+	padding: 10px 10px 10px 15px;
+	margin-left: 0px;
+	border: 0;
+	width: 300px;
+}
+
 button:hover {
 	background-color: #34373c;
 	color: #72767d;
@@ -133,6 +144,7 @@ table {
 h1 {
 	font-size: 24px;
 	margin-bottom: 4px;
+	padding-left: 15px;
 }
 
 h2 {
@@ -150,6 +162,34 @@ h3 {
 	margin-left: 20px;
 }
 
+h5 {
+	font-size: 20px;
+	padding-left: 20px;
+	padding-top: 8px;
+	padding-bottom: 6px;
+	margin-bottom: 0px;
+	background: #2f3136;
+}
+
+h6 {
+	font-size: 14px;
+	padding-left: 20px;
+	padding-bottom: 10px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	color: #fafafa;
+	background: #2f3136;
+}
+
+h4 {
+	font-size: 18px;
+	padding-left: 20px;
+	padding-top: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	background: #2f3136;
+}
+
 .sidebarcontent {
 	background-color: #2f3136;
 	color: #72767d;
@@ -157,10 +197,11 @@ h3 {
 	font-size: 14px;
 	box-sizing: border-box;
 	padding-left: 0px;
+	margin-left: 0px;
 	position: fixed;
 	bottom: -18px;
 	left: 0;
-	height: 96%;
+	height: 89%;
 	width: 300px;
 	overflow: scroll;
 }
@@ -168,13 +209,14 @@ h3 {
 .sidebar {
 	background-color: #2f3136;
 	color: #fafafa;
+	margin-left: 0px;
 	text-align: left;
 	font-size: 14px;
 	box-sizing: border-box;
-	padding: 0px 0px 15px 15px;
+	padding: 0px 0px 15px 0px;
 	position: fixed;
 	top: 0;
 	left: 0;
-	height: 6%;
+	height: 12%;
 	width: 300px;
 }
