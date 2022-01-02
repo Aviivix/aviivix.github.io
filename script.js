@@ -107,14 +107,22 @@ function showSpeciesList(){
 				var owner = Object.keys(Holdings[species][subspecies])[o]
 				
 				if (Holdings[species][subspecies][owner]['Juv']['M'] + Holdings[species][subspecies][owner]['Juv']['F'] == 0) {
-					var notation = ZooJson['Zoos'][owner]['zoo_name'] + " (" + Holdings[species][subspecies][owner]['Adult']["M"] + '.' + Holdings[species][subspecies][owner]['Adult']["F"] + ")"
+					if(ZooJson['Zoos'][owner]['status'] != 'Open'){
+						var notation = '<p style=\"color:#72767d\">' + ZooJson['Zoos'][owner]['zoo_name'] + " (" + Holdings[species][subspecies][owner]['Adult']["M"] + '.' + Holdings[species][subspecies][owner]['Adult']["F"] + ")" + '</p>'
+					} else {
+						var notation = '<p>' + ZooJson['Zoos'][owner]['zoo_name'] + " (" + Holdings[species][subspecies][owner]['Adult']["M"] + '.' + Holdings[species][subspecies][owner]['Adult']["F"] + ')</p>'
+					}
 				} else {
-					var notation = ZooJson['Zoos'][owner]['zoo_name'] + " (" + Holdings[species][subspecies][owner]['Adult']["M"] + '.' + Holdings[species][subspecies][owner]['Adult']["F"] + '.' + Holdings[species][subspecies][owner]['Juv']["M"] + '.' + Holdings[species][subspecies][owner]['Juv']["F"] + ')'
+					if(ZooJson['Zoos'][owner]['status'] != 'Open'){
+						var notation = '<p style=\"color:#72767d\">' + ZooJson['Zoos'][owner]['zoo_name'] + " (" + Holdings[species][subspecies][owner]['Adult']["M"] + '.' + Holdings[species][subspecies][owner]['Adult']["F"] + '.' + Holdings[species][subspecies][owner]['Juv']["M"] + '.' + Holdings[species][subspecies][owner]['Juv']["F"] + ')' + '</p>'
+					} else {
+						var notation = '<p>' + ZooJson['Zoos'][owner]['zoo_name'] + " (" + Holdings[species][subspecies][owner]['Adult']["M"] + '.' + Holdings[species][subspecies][owner]['Adult']["F"] + '.' + Holdings[species][subspecies][owner]['Juv']["M"] + '.' + Holdings[species][subspecies][owner]['Juv']["F"] + ')</p>'
+					}
 				}
 				cols[o%5].push(notation)
 				console.log(cols)
 			}
-			var HoldingHTML = HoldingHTML + "<div class=\"column\"><p>" + cols[0].join("</p><p>") + "</p></div><div class=\"column\"><p>" + cols[1].join("</p><p>") + "</p></div><div class=\"column\"><p>" + cols[2].join("</p><p>") + "</p></div><div class=\"column\"><p>" + cols[3].join("</p><p>") + "</p></div><div class=\"column\"><p>" + cols[4].join("</p><p>") + "</p></div></div>"
+			var HoldingHTML = HoldingHTML + "<div class=\"column\"> " + cols[0].join(" ") + " </div><div class=\"column\"> " + cols[1].join(" ") + " </div><div class=\"column\"> " + cols[2].join(" ") + " </div><div class=\"column\"> " + cols[3].join(" ") + " </div><div class=\"column\"> " + cols[4].join(" ") + " </div></div>"
 		}
 	}
 	document.getElementById("main_data").innerHTML = HoldingHTML
