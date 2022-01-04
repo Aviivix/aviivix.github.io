@@ -59,7 +59,7 @@ function showStaffLogin(){
 
 function loadStaffPage(){
 	// This isn't secure. This isn't meant to be secure, just a deterrent. This is a Zoo Tycoon roleplay group. Why are you trying to hack it.
-	if(document.getElementById("admin_pass").value == ''){
+	if(document.getElementById("admin_pass").value == 'peggle2'){
 		document.getElementById("main_data").innerHTML = "<h3>Admin Tools</h3><button type=\"button3\" onclick=\"staffSpecies()\">Edit Species</button><button type=\"button3\" onclick=\"staffZoos()\">Edit Zoos</button><button type=\"button3\" onclick=\"staffAnimals()\">Edit Animals</button><br><br><div id=\"staffData\"></div>"
 		document.getElementById("zoo_button").innerHTML = "Search Zoos"
 		document.getElementById("species_button").innerHTML = "Search Species"
