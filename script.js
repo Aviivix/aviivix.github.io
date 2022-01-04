@@ -1,4 +1,6 @@
-document.getElementById("version_number").innerHTML = "ZSUIMS v0.2.5";
+// v0.2.0
+
+document.getElementById("version_number").innerHTML = "ZSUIMS v0.3.0";
 var coll = document.getElementsByClassName("collapsible");
 var i;
 
@@ -44,10 +46,91 @@ function blankData(){
 	document.getElementById("main_data").innerHTML = ""
 	document.getElementById("zoo_button").innerHTML = "<b>Search Zoos</b>"
 	document.getElementById("species_button").innerHTML = "Search Species"
+	document.getElementById("admin_button").innerHTML = "Admin Tools"
+}
+
+
+function showStaffLogin(){
+	document.getElementById("main_data").innerHTML = "<b>Enter Admin Password</b><p><input type=\"text\" id=\"admin_pass\" name=\"admin_pass\"><input onClick=\"loadStaffPage()\"  type=\"submit\" value=\"Submit\"></p>"
+	document.getElementById("zoo_button").innerHTML = "Search Zoos"
+	document.getElementById("species_button").innerHTML = "Search Species"
+	document.getElementById("admin_button").innerHTML = "<b>Admin Tools</b>"
+}
+
+function loadStaffPage(){
+	// This isn't secure. This isn't meant to be secure, just a deterrent. This is a Zoo Tycoon roleplay group. Why are you trying to hack it.
+	if(document.getElementById("admin_pass").value == 'peggle2'){
+		document.getElementById("main_data").innerHTML = "<h3>Admin Tools</h3><button type=\"button3\" onclick=\"staffSpecies()\">Edit Species</button><button type=\"button3\" onclick=\"staffZoos()\">Edit Zoos</button><button type=\"button3\" onclick=\"staffAnimals()\">Edit Animals</button><br><br><div id=\"staffData\"></div>"
+		document.getElementById("zoo_button").innerHTML = "Search Zoos"
+		document.getElementById("species_button").innerHTML = "Search Species"
+		document.getElementById("admin_button").innerHTML = "<b>Admin Tools</b>"
+	}
+}
+
+function staffSpecies(){
+	var ZooData = Http.responseText;
+	var ZooJson = JSON.parse(ZooData);
+	var SpeciesList = Object.keys(ZooJson.Species);
+	var staffSpeciesHTML = '<table id=\"species_table\"><tr><th style="width: 80px;">Group</th><th>Scientific Name</th><th>Common Names</th><th>Order</th><th>Family</th><th style="width: 66px;">Pair Type</th><th style="width: 66px;">Min</th><th style="width: 66px;">Max</th><th style="width: 66px;">Odds</th><th style="width: 66px;">Freq</th><th style="width: 66px;">Adult Time</th><th style="width: 30px;">Submit</th></tr>'
+	
+	document.getElementById("staffData").innerHTML = staffSpeciesHTML
+	
+	for(i = 0; i < SpeciesList.length; i++){
+		species = ZooJson['Species'][SpeciesList[i]]
+		
+		staffSpeciesHTML = staffSpeciesHTML + '<tr id="' + SpeciesList[i] + '">'
+		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_group">' + species['group'] + '</td>'
+		staffSpeciesHTML = staffSpeciesHTML + '<td>' + SpeciesList[i] + '</td>'
+		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_names" contenteditable="true">' + species['common names'].join('<br>') + '</td>'
+		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_order" contenteditable="true">' + species['order'] + '</td>'
+		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_family" contenteditable="true">' + species['family'] + '</td>'
+		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_pair" contenteditable="true">' + species['pair type'] + '</td>'
+		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_min" contenteditable="true">' + species['min'] + '</td>'
+		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_max" contenteditable="true">' + species['max'] + '</td>'
+		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_odds" contenteditable="true">' + species['odds'] + '</td>'
+		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_freq" contenteditable="true">' + species['freq'] + '</td>'
+		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_adult" contenteditable="true">' + species['adult time'] + '</td>'
+		staffSpeciesHTML = staffSpeciesHTML + '<td><button style="width: 80px;" type="button2" onclick="applyChanges(\'Species\', \'' + SpeciesList[i] + '\')" id="' + SpeciesList[i] + '_submit">Update</button></td>'
+		staffSpeciesHTML = staffSpeciesHTML + '</tr>'
+	}
+	
+	document.getElementById("staffData").innerHTML = staffSpeciesHTML
+}
+
+function applyChanges(section, field){
+	var patchurl = "https://aviivix-ecde9-default-rtdb.firebaseio.com/ZSUIMS/" + section + "/" + field + ".json";
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("PATCH", patchurl);
+
+	xhr.setRequestHeader("Accept", "application/json");
+	xhr.setRequestHeader("Content-Type", "application/json");
+
+	xhr.onreadystatechange = function () {
+	   if (xhr.readyState === 4) {
+		  console.log(xhr.status);
+		  console.log(xhr.responseText);
+	   }
+	};
+	names = document.getElementById(field + "_names").innerHTML.split('<br>')
+	
+	data = '{"adult time": ' + document.getElementById(field + "_adult").innerHTML + ', "common names": ["' + names.join('","') + '"], "freq": ' + document.getElementById(field + "_freq").innerHTML + ', "max": ' + document.getElementById(field + "_max").innerHTML + ', "min": ' + document.getElementById(field + "_min").innerHTML + ', "odds": ' + document.getElementById(field + "_odds").innerHTML + ', "order": "' + document.getElementById(field + "_order").innerHTML + '", "pair type": "' + document.getElementById(field + "_pair").innerHTML + '", "family": "' + document.getElementById(field + "_family").innerHTML + '"}'
+	console.log(data)
+
+	xhr.send(data);
+}
+
+function staffZoos(){
+	
+}
+
+function staffAnimals(){
+	
 }
 
 function showSpeciesList(){
 	document.getElementById("zoo_button").innerHTML = "Search Zoos"
+	document.getElementById("admin_button").innerHTML = "Admin Tools"
 	document.getElementById("species_button").innerHTML = "<b>Search Species</b>"
 	document.getElementById("main_data").innerHTML = "\t<h3>Species Data</h3>\n\t\t<h1>Mammals</h1>\n\t\t<div id=\"mam_info\"></div>\n\t\t<h1>Birds</h1>\n\t\t<div id=\"bird_info\"></div>\n\t\t<h1>Herptiles</h1>\n\t\t<div id=\"herp_info\"></div>\n\t\t<h1>Fish</h1>\n\t\t<div id=\"fish_info\"></div>\n\t\t<h1>Invertebrates</h1>\n\t\t<div id=\"invert_info\"></div>"
 	
