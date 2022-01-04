@@ -1,6 +1,6 @@
 // v0.2.0
 
-document.getElementById("version_number").innerHTML = "ZSUIMS v0.3.0";
+document.getElementById("version_number").innerHTML = "ZSUIMS v0.2.5";
 var coll = document.getElementsByClassName("collapsible");
 var i;
 
@@ -59,7 +59,7 @@ function showStaffLogin(){
 
 function loadStaffPage(){
 	// This isn't secure. This isn't meant to be secure, just a deterrent. This is a Zoo Tycoon roleplay group. Why are you trying to hack it.
-	if(document.getElementById("admin_pass").value == 'peggle2'){
+	if(document.getElementById("admin_pass").value == ''){
 		document.getElementById("main_data").innerHTML = "<h3>Admin Tools</h3><button type=\"button3\" onclick=\"staffSpecies()\">Edit Species</button><button type=\"button3\" onclick=\"staffZoos()\">Edit Zoos</button><button type=\"button3\" onclick=\"staffAnimals()\">Edit Animals</button><br><br><div id=\"staffData\"></div>"
 		document.getElementById("zoo_button").innerHTML = "Search Zoos"
 		document.getElementById("species_button").innerHTML = "Search Species"
@@ -71,25 +71,37 @@ function staffSpecies(){
 	var ZooData = Http.responseText;
 	var ZooJson = JSON.parse(ZooData);
 	var SpeciesList = Object.keys(ZooJson.Species);
-	var staffSpeciesHTML = '<table id=\"species_table\"><tr><th style="width: 80px;">Group</th><th>Scientific Name</th><th>Common Names</th><th>Order</th><th>Family</th><th style="width: 66px;">Pair Type</th><th style="width: 66px;">Min</th><th style="width: 66px;">Max</th><th style="width: 66px;">Odds</th><th style="width: 66px;">Freq</th><th style="width: 66px;">Adult Time</th><th style="width: 30px;">Submit</th></tr>'
+	var staffSpeciesHTML = '<b>Pairing Types</b><br><b>MONO</b>: Serially Monogamous. A pair will both commit to breeding, but may pair up with others.<br><b>LIFE</b>: Mate for Life. A pair will both commit to breeding, and will remember their mate.<br><b>HARM and HARF</b>: Harem of Males/Females. A single male will be able to breed with many females, or vice versa.<br><br><b>Breeding Numbers</b><br><b>Min-Max</b>: Litter size.<br><b>Odds</b>Chances of breeding each viable week compared to others. 0.5 is half, 2 is twice.<br><b>Freq</b>Number of weeks after baby grows up until it is able to breed again.<br><b>Adult Time</b>: How many weeks it takes for a baby to grow up.<br><br><table id=\"species_table\"><tr><th style="width: 80px;">Group</th><th>Scientific Name</th><th>Common Names</th><th>Order</th><th>Family</th><th style="width: 66px;">Pair Type</th><th style="width: 50px;">Min</th><th style="width: 50px;">Max</th><th style="width: 50px;">Odds</th><th style="width: 50px;">Freq</th><th style="width: 50px;">Adult Time</th><th style="width: 80px;">Author</th><th style="width: 30px;">Submit</th></tr>'
 	
 	document.getElementById("staffData").innerHTML = staffSpeciesHTML
 	
 	for(i = 0; i < SpeciesList.length; i++){
 		species = ZooJson['Species'][SpeciesList[i]]
+		if(species['author'] == undefined){
+			author = ""
+		} else {
+			author = species['author']
+		}
+		
+		if(species['family'] == undefined){
+			family = ""
+		} else {
+			family = species['family']
+		}
 		
 		staffSpeciesHTML = staffSpeciesHTML + '<tr id="' + SpeciesList[i] + '">'
 		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_group">' + species['group'] + '</td>'
 		staffSpeciesHTML = staffSpeciesHTML + '<td>' + SpeciesList[i] + '</td>'
 		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_names" contenteditable="true">' + species['common names'].join('<br>') + '</td>'
 		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_order" contenteditable="true">' + species['order'] + '</td>'
-		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_family" contenteditable="true">' + species['family'] + '</td>'
+		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_family" contenteditable="true">' + family + '</td>'
 		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_pair" contenteditable="true">' + species['pair type'] + '</td>'
 		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_min" contenteditable="true">' + species['min'] + '</td>'
 		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_max" contenteditable="true">' + species['max'] + '</td>'
 		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_odds" contenteditable="true">' + species['odds'] + '</td>'
 		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_freq" contenteditable="true">' + species['freq'] + '</td>'
 		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_adult" contenteditable="true">' + species['adult time'] + '</td>'
+		staffSpeciesHTML = staffSpeciesHTML + '<td id="' + SpeciesList[i] + '_author" contenteditable="true">' + author + '</td>'
 		staffSpeciesHTML = staffSpeciesHTML + '<td><button style="width: 80px;" type="button2" onclick="applyChanges(\'Species\', \'' + SpeciesList[i] + '\')" id="' + SpeciesList[i] + '_submit">Update</button></td>'
 		staffSpeciesHTML = staffSpeciesHTML + '</tr>'
 	}
@@ -114,7 +126,7 @@ function applyChanges(section, field){
 	};
 	names = document.getElementById(field + "_names").innerHTML.split('<br>')
 	
-	data = '{"adult time": ' + document.getElementById(field + "_adult").innerHTML + ', "common names": ["' + names.join('","') + '"], "freq": ' + document.getElementById(field + "_freq").innerHTML + ', "max": ' + document.getElementById(field + "_max").innerHTML + ', "min": ' + document.getElementById(field + "_min").innerHTML + ', "odds": ' + document.getElementById(field + "_odds").innerHTML + ', "order": "' + document.getElementById(field + "_order").innerHTML + '", "pair type": "' + document.getElementById(field + "_pair").innerHTML + '", "family": "' + document.getElementById(field + "_family").innerHTML + '"}'
+	data = '{"adult time": ' + document.getElementById(field + "_adult").innerHTML + ', "common names": ["' + names.join('","') + '"], "freq": ' + document.getElementById(field + "_freq").innerHTML + ', "max": ' + document.getElementById(field + "_max").innerHTML + ', "min": ' + document.getElementById(field + "_min").innerHTML + ', "odds": ' + document.getElementById(field + "_odds").innerHTML + ', "order": "' + document.getElementById(field + "_order").innerHTML + '", "pair type": "' + document.getElementById(field + "_pair").innerHTML + '", "family": "' + document.getElementById(field + "_family").innerHTML + '", "author": "' + document.getElementById(field + "_author").innerHTML + '"}'
 	console.log(data)
 
 	xhr.send(data);
