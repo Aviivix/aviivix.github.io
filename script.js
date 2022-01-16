@@ -1,6 +1,6 @@
 // v0.2.0
 
-document.getElementById("version_number").innerHTML = "ZSUIMS v0.23.9";
+document.getElementById("version_number").innerHTML = "ZSUIMS v0.2.10";
 var coll = document.getElementsByClassName("collapsible");
 var i;
 
@@ -157,6 +157,7 @@ function showSpeciesList(){
 		var sex = ZooJson['Individuals'][IndList[i]]['sex']
 		var age = ZooJson['Individuals'][IndList[i]]['age']
 		var owner = ZooJson['Individuals'][IndList[i]]['owner'];
+		console.log(species);
 		
 		if (Object.keys(ZooJson['Individuals'][IndList[i]]).indexOf('subspecies_breed') == -1) {
 			var subspecies = 'No Subspecific Status';
