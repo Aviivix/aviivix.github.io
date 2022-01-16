@@ -1,6 +1,6 @@
 // v0.2.0
 
-document.getElementById("version_number").innerHTML = "ZSUIMS v0.2.10";
+document.getElementById("version_number").innerHTML = "ZSUIMS v0.2.11";
 var coll = document.getElementsByClassName("collapsible");
 var i;
 
@@ -141,6 +141,7 @@ function staffAnimals(){
 }
 
 function showSpeciesList(){
+	document.getElementById("main_data").innerHTML = "<br><br><br><div align=\"center\"><img src=\"https://cdn.discordapp.com/emojis/905527527655735349.gif\"></div>"
 	document.getElementById("zoo_button").innerHTML = "Search Zoos"
 	document.getElementById("admin_button").innerHTML = "Admin Tools"
 	document.getElementById("species_button").innerHTML = "<b>Search Species</b>"
