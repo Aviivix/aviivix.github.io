@@ -208,6 +208,7 @@ function showSpeciesList(){
 				var owner = Object.keys(Holdings[species][subspecies])[o]
 				
 				if (Holdings[species][subspecies][owner]['Juv']['M'] + Holdings[species][subspecies][owner]['Juv']['F'] == 0) {
+					console.log(owner);
 					if(ZooJson['Zoos'][owner]['status'] != 'Open'){
 						var notation = '<p style=\"color:#72767d\">' + ZooJson['Zoos'][owner]['zoo_name'] + " (" + Holdings[species][subspecies][owner]['Adult']["M"] + '.' + Holdings[species][subspecies][owner]['Adult']["F"] + ")" + '</p>'
 					} else {
