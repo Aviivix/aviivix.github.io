@@ -178,6 +178,11 @@ function showSpeciesList(){
 		} else if (Object.keys(Holdings[species][subspecies]).indexOf(owner) == -1) {
 			Holdings[species][subspecies][owner] = { 'Adult': { "M": 0, "F": 0 }, 'Juv': { "M": 0, "F": 0 } }
 		}
+		console.log(species);
+		console.log(subspecies);
+		console.log(owner);
+		console.log(age);
+		console.log(sex);
 		Holdings[species][subspecies][owner][age][sex]++
 	}
 	
