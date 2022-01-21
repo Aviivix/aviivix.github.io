@@ -127,7 +127,6 @@ function applyChanges(section, field){
 	names = document.getElementById(field + "_names").innerHTML.split('<br>')
 	
 	data = '{"adult time": ' + document.getElementById(field + "_adult").innerHTML + ', "common names": ["' + names.join('","') + '"], "freq": ' + document.getElementById(field + "_freq").innerHTML + ', "max": ' + document.getElementById(field + "_max").innerHTML + ', "min": ' + document.getElementById(field + "_min").innerHTML + ', "odds": ' + document.getElementById(field + "_odds").innerHTML + ', "order": "' + document.getElementById(field + "_order").innerHTML + '", "pair type": "' + document.getElementById(field + "_pair").innerHTML + '", "family": "' + document.getElementById(field + "_family").innerHTML + '", "author": "' + document.getElementById(field + "_author").innerHTML + '"}'
-	console.log(data)
 
 	xhr.send(data);
 }
@@ -158,7 +157,6 @@ function showSpeciesList(){
 		var sex = ZooJson['Individuals'][IndList[i]]['sex']
 		var age = ZooJson['Individuals'][IndList[i]]['age']
 		var owner = ZooJson['Individuals'][IndList[i]]['owner'];
-		console.log(species);
 		
 		if (Object.keys(ZooJson['Individuals'][IndList[i]]).indexOf('subspecies_breed') == -1) {
 			var subspecies = 'No Subspecific Status';
@@ -178,11 +176,6 @@ function showSpeciesList(){
 		} else if (Object.keys(Holdings[species][subspecies]).indexOf(owner) == -1) {
 			Holdings[species][subspecies][owner] = { 'Adult': { "M": 0, "F": 0 }, 'Juv': { "M": 0, "F": 0 } }
 		}
-		console.log(species);
-		console.log(subspecies);
-		console.log(owner);
-		console.log(age);
-		console.log(sex);
 		Holdings[species][subspecies][owner][age][sex]++
 	}
 	
@@ -208,7 +201,6 @@ function showSpeciesList(){
 				var owner = Object.keys(Holdings[species][subspecies])[o]
 				
 				if (Holdings[species][subspecies][owner]['Juv']['M'] + Holdings[species][subspecies][owner]['Juv']['F'] == 0) {
-					console.log(owner);
 					if(ZooJson['Zoos'][owner]['status'] != 'Open'){
 						var notation = '<p style=\"color:#72767d\">' + ZooJson['Zoos'][owner]['zoo_name'] + " (" + Holdings[species][subspecies][owner]['Adult']["M"] + '.' + Holdings[species][subspecies][owner]['Adult']["F"] + ")" + '</p>'
 					} else {
@@ -222,7 +214,6 @@ function showSpeciesList(){
 					}
 				}
 				cols[o%5].push(notation)
-				console.log(cols)
 			}
 			var HoldingHTML = HoldingHTML + "<div class=\"column\"> " + cols[0].join(" ") + " </div><div class=\"column\"> " + cols[1].join(" ") + " </div><div class=\"column\"> " + cols[2].join(" ") + " </div><div class=\"column\"> " + cols[3].join(" ") + " </div><div class=\"column\"> " + cols[4].join(" ") + " </div></div>"
 		}
@@ -282,16 +273,11 @@ function getZooData(zoo_name){
 	var FishCol = [[],[],[],[],[]]
 	var InveCol = [[],[],[],[],[]]	
 	
-	console.log('SPECIES OK: ')
-	console.log(OwnedSpecies)
-	
 	for (let i = 0; i < Object.keys(OwnedSpecies).length; i++){
 		
 		var species = Object.keys(OwnedSpecies)[i]
-		console.log('NEW SPECIES: ' + species)
 		for (let s = 0; s < Object.keys(OwnedSpecies[species]).length; s++){
 			var subspecies = Object.keys(OwnedSpecies[species])[s]
-			console.log('CHECKING SUBSPECIES: ' + subspecies)
 			if (subspecies != 'No Subspecific Status'){
 				if (OwnedSpecies[species][subspecies]['Juv']['M'] + OwnedSpecies[species][subspecies]['Juv']['F'] == 0) {
 					var notation = OwnedSpecies[species][subspecies]['Adult']["M"] + '.' + OwnedSpecies[species][subspecies]['Adult']["F"] + ' ' + ZooJson['Species'][species]['common names'][0] + ' (' + subspecies + ')'
