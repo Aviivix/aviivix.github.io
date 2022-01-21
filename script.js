@@ -1,6 +1,6 @@
 // v0.2.0
 
-document.getElementById("version_number").innerHTML = "ZSUIMS v0.2.11";
+document.getElementById("version_number").innerHTML = "ZSUIMS v0.2.12";
 var coll = document.getElementsByClassName("collapsible");
 var i;
 
