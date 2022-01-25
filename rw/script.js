@@ -5,11 +5,28 @@ function sleep(ms) {
 }
 
 screenshots = ["cloudfall.png", "five-valleys.png", "himeville_animal_park.png", "hope.png", "itaoca.png", "losjon.png", "serra_mondiale.png", "zoo_moss.png"]
+images = []
+function preload() {
+    for (var i = 0; i < screenshots.length; i++) {
+        images[i] = new Image();
+		console.log('assets/screenshots/' + screenshots[i])
+        images[i].src = preload['assets/screenshots/' + screenshots[i]];
+    }
+}
+
+//-- usage --//
+preload(screenshots)
+
 screenIndex = 0
 
 cur = document.querySelector('.carousel_container_main')
 nxt = document.querySelector('.carousel_container_next')
 
+function preloadImage(url)
+{
+    var img=new Image();
+    img.src=url;
+}
 
 time=setInterval(async function(){
 	if (screenIndex + 1 == screenshots.length) {
@@ -36,13 +53,6 @@ time=setInterval(async function(){
 	await new Promise(r => setTimeout(r, 50));
 	cur.style.transition = 'margin 0.5s'
 	nxt.style.transition = 'margin 0.5s'
-	
-	
-	if (screenIndex + 1 == screenshots.length) {
-		document.getElementById('carousel_preload').style.backgroundImage = 'url(assets/screenshots/' + screenshots[0] + ')'
-	} else {
-		document.getElementById('carousel_preload').style.backgroundImage = 'url(assets/screenshots/' + screenshots[screenIndex+1] + ')'
-	}
 	
 	
 },4000);
