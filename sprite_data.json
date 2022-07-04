@@ -1,0 +1,9 @@
+sprite_data = 
+	{
+		"sprites": {
+			"front_leg": {
+				"sprite_size": [17,20]
+			}
+		}
+	}
+;

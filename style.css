@@ -1,0 +1,47 @@
+/* v0.1.7 */
+
+@font-face {
+	font-family: whitney;
+	src: url(whitneymedium.otf);
+}
+
+body {
+	background-color: #333333;
+	font-size: 14px;
+	font-family: whitney;
+	color: #fafafa;
+}
+
+canvas {
+    left: 0;
+    right: 0;
+    image-rendering: pixelated;
+}
+
+.editor_ui {
+	margin: auto;
+	padding-top: 150px;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+/* Clear floats after the columns */
+.editor_ui:after {
+  content: "";
+  display: flex;
+  clear: both;
+}
+
+
+.left {
+	background-color: #7cca92;
+	width: 400px;
+	height: 400px;
+	margin-right: 5%;
+}
+
+.right {
+	background-color: #212121;
+	width: 800px;
+}
