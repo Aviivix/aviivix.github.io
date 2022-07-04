@@ -43,7 +43,6 @@ function draw() {
 	// Nabbed from http://jsfiddle.net/loktar/63QZz/ https://stackoverflow.com/questions/23468218/draw-10-000-objects-on-canvas-javascript
 	
 	fr += fr;
-	console.log("draw");
 	
 	var canvasData = ctx.createImageData(width, height),
 		cData = canvasData.data;
