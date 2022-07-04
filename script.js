@@ -67,6 +67,7 @@ function draw() {
 			}
 		}
 	}
+	console.log(fr)
 	ctx.putImageData(canvasData, 0, 0);
     window.requestAnimFrame(draw);
 }
