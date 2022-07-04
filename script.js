@@ -71,12 +71,10 @@ function draw() {
 
 function pony_add_spr(part, stl) {
 	var col = new Image();
-	col.crossOrigin = true;
 	col.src = "assets/" + part + "/" + stl + "/col.png";
 
 	col.onload = function() {
 		var tex = new Image();
-		tex.crossOrigin = true;
 		tex.src = "assets/" + part + "/" + stl + "/tex.png";
 
 		tex.onload = function() {
