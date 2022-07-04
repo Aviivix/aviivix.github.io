@@ -107,6 +107,7 @@ function pony_add_spr(part, stl) {
 			t_ctx.drawImage(col, 0, 0);
 			
 			img_data = t_ctx.getImageData(0,0,col.width,col.height);
+			console.log(img_data)
 			img_pixdata = img_data.data;
 			
 			draw()
